@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useAddUserDashboardDataMutation } from "../../app/providers/store/api";
+import { useUpdateUserDashboardDataMutation } from "../../app/providers/store/api";
 
 import { Formik, Field, Form } from "formik";
 import { userFieldValues, userSchema } from "./lib";
@@ -8,11 +8,11 @@ import { userFieldValues, userSchema } from "./lib";
 import { Button, Input, Select, Flex } from "@chakra-ui/react";
 
 export const EditUserFields = () => {
-  const [data] = useAddUserDashboardDataMutation();
+  const [data] = useUpdateUserDashboardDataMutation();
   console.log(data);
 
   const onSubmitForm = async (values: any) => {
-    console.log(values);
+    console.log(values, 34444);
 
     const fd = new FormData();
     for (let i in values) {
@@ -21,7 +21,7 @@ export const EditUserFields = () => {
 
     try {
       await data(fd).unwrap();
-      console.log(await data(1).unwrap());
+      console.log(await data(fd).unwrap(), 333);
     } catch (error) {
       console.log(error);
     }
@@ -30,40 +30,58 @@ export const EditUserFields = () => {
   return (
     <Formik
       initialValues={userFieldValues}
-      validationSchema={userSchema}
+      // validationSchema={userSchema}
       onSubmit={onSubmitForm}
     >
       {(formik) => {
-        // console.log("formik", formik);
+        console.log("formik", formik);
         return (
           <Form>
             <Flex flexDir={"column"} width={"50%"} mb={"20px"} gap={4}>
               <Flex flexDir={"column"} gap={4}>
                 <label htmlFor="name">Name</label>
-                <Input name="name" placeholder="Enter Name" />
+                <Field
+                  as="input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter Name"
+                />
               </Flex>
               <Flex flexDir={"column"} gap={4}>
                 <label htmlFor="username">User Name</label>
-                <Input name="username" placeholder="Enter User Name" />
+                <Field
+                  as="input"
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enter User Name"
+                />
               </Flex>
               <Flex flexDir={"column"} gap={4}>
                 <label htmlFor="password">Password</label>
-                <Input name="password" placeholder="Enter Password" />
+                <Field
+                  as="input"
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter Password"
+                />
               </Flex>
               <Flex flexDir={"column"} gap={4}>
                 <label htmlFor="gender">Choose Gender</label>
-                <Select name="gender">
+                <Select id="gender" name="gender">
                   <option>Female</option>
                   <option>Male</option>
                 </Select>
               </Flex>
-              <Flex flexDir={"column"} gap={4}>
+              {/* <Flex flexDir={"column"} gap={4}>
                 <label htmlFor="createdOn">Created Date</label>
                 <Select name="createdOn">
                   <option>Female</option>
                   <option>Male</option>
                 </Select>
-              </Flex>
+              </Flex> */}
             </Flex>
             <Button type="submit">Save</Button>
           </Form>

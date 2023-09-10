@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
   userDataAPI,
-  useUpdateUserDashboardDataMutation,
+  useGetUserDashboardDataQuery,
   useDeleteUserDashboardDataMutation,
 } from "../../../app/providers/store/api";
 
@@ -18,7 +18,7 @@ import {
   TableContainer,
   Button,
 } from "@chakra-ui/react";
-
+import { userFieldValues } from "../../edit-user/lib";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 
@@ -28,14 +28,21 @@ export const DashboardTable = () => {
   const navigate = useNavigate();
 
   console.log(currentData);
+  // React.useEffect(() => {
+  //   getAllUserData();
+  // }, []);
 
-  const editUser = async () => {
+  const editUser = async (data) => {
+    for (let i in userFieldValues) {
+      userFieldValues[i] = data[i];
+    }
     navigate("/edit");
   };
 
   const deleteUser = async (userID) => {
     try {
       await deleteUserInfo(userID).unwrap();
+      // getAllUserData();
       console.log("success");
     } catch (error) {
       console.log(error);
@@ -67,7 +74,7 @@ export const DashboardTable = () => {
                 <Td>{data.gender}</Td>
                 <Td>{data.createdOn}</Td>
                 <Th>
-                  <Button onClick={editUser}>
+                  <Button onClick={() => editUser(data)}>
                     <FiEdit />
                     Edit
                   </Button>
