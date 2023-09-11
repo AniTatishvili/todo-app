@@ -1,4 +1,6 @@
 import React from "react";
+import { useAddUserDashboardDataMutation } from "../../../app/providers/store/api";
+
 import {
   Button,
   Modal,
@@ -8,21 +10,21 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Flex,
-  Select,
-  Input,
 } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+
+import { Formik } from "formik";
+
 import { userFieldValues, userSchema } from "../../edit-user/lib";
-import { useAddUserDashboardDataMutation } from "../../../app/providers/store/api";
+
+import { EditUserFields } from "../../edit-user/edit-user-fields";
 
 export const DashboardModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data] = useAddUserDashboardDataMutation();
   console.log(data);
 
-  const onSubmitForm = async (values: any) => {
-    console.log(values);
+  const onSubmitAddForm = async (values: any) => {
+    console.log("add", values);
 
     const fd = new FormData();
     for (let i in values) {
@@ -30,8 +32,8 @@ export const DashboardModal = () => {
     }
 
     try {
-      await data(fd).unwrap();
-      console.log(await data(fd).unwrap(), 99);
+      await data(values).unwrap();
+      console.log(await data(values).unwrap(), 99);
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +42,7 @@ export const DashboardModal = () => {
     <>
       <Button onClick={onOpen}>Add New User</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"xl"} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Modal Title</ModalHeader>
@@ -49,43 +51,11 @@ export const DashboardModal = () => {
             <Formik
               initialValues={userFieldValues}
               validationSchema={userSchema}
-              onSubmit={onSubmitForm}
+              onSubmit={onSubmitAddForm}
             >
               {(formik) => {
                 // console.log("formik", formik);
-                return (
-                  <Form>
-                    <Flex flexDir={"column"} width={"50%"} mb={"20px"} gap={4}>
-                      <Flex flexDir={"column"} gap={4}>
-                        <label htmlFor="name">Name</label>
-                        <Input name="name" placeholder="Enter Name" />
-                      </Flex>
-                      <Flex flexDir={"column"} gap={4}>
-                        <label htmlFor="username">User Name</label>
-                        <Input name="username" placeholder="Enter User Name" />
-                      </Flex>
-                      <Flex flexDir={"column"} gap={4}>
-                        <label htmlFor="password">Password</label>
-                        <Input name="password" placeholder="Enter Password" />
-                      </Flex>
-                      <Flex flexDir={"column"} gap={4}>
-                        <label htmlFor="gender">Choose Gender</label>
-                        <Select name="gender">
-                          <option>Female</option>
-                          <option>Male</option>
-                        </Select>
-                      </Flex>
-                      <Flex flexDir={"column"} gap={4}>
-                        <label htmlFor="createdOn">Created Date</label>
-                        <Select name="createdOn">
-                          <option>Female</option>
-                          <option>Male</option>
-                        </Select>
-                      </Flex>
-                    </Flex>
-                    <Button type="submit">Save</Button>
-                  </Form>
-                );
+                return <EditUserFields />;
               }}
             </Formik>
           </ModalBody>

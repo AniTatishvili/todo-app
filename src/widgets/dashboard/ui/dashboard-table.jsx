@@ -17,13 +17,14 @@ import {
   TableCaption,
   TableContainer,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import { userFieldValues } from "../../edit-user/lib";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 
 export const DashboardTable = () => {
-  const { currentData } = userDataAPI.endpoints.getUserDashboardData.useQuery();
+  const [getAllUserData, { currentData }] = useGetUserDashboardDataQuery();
   const [deleteUserInfo] = useDeleteUserDashboardDataMutation();
   const navigate = useNavigate();
 
@@ -36,6 +37,7 @@ export const DashboardTable = () => {
     for (let i in userFieldValues) {
       userFieldValues[i] = data[i];
     }
+    console.log(data, "data");
     navigate("/edit");
   };
 
@@ -65,7 +67,7 @@ export const DashboardTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {currentData?.map((data) => {
+          {/* {currentData?.map((data) => {
             return (
               <Tr key={data.id}>
                 <Td>{data.name}</Td>
@@ -76,18 +78,18 @@ export const DashboardTable = () => {
                 <Th>
                   <Button onClick={() => editUser(data)}>
                     <FiEdit />
-                    Edit
+                    <Text ms={1}>Edit</Text>
                   </Button>
                 </Th>
                 <Th>
                   <Button onClick={() => deleteUser(data.id)}>
                     <AiOutlineDelete />
-                    Delete
+                    <Text ms={1}>Delete</Text>
                   </Button>
                 </Th>
               </Tr>
             );
-          })}
+          })} */}
         </Tbody>
       </Table>
     </TableContainer>

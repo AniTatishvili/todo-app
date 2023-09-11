@@ -1,6 +1,6 @@
 import React from "react";
-import { EditUserFields } from "../../widgets/edit-user";
+import { EditUser } from "../../entities/edit-user/edit-user";
 
 export const Edit = () => {
-  return <EditUserFields />;
+  return <EditUser />;
 };
