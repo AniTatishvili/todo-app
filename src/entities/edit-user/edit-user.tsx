@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useUpdateUserDashboardDataMutation } from "../../app/providers/store/api";
 
 import { Formik, Form, ErrorMessage } from "formik";
@@ -10,26 +11,27 @@ export const EditUser = () => {
   const [data] = useUpdateUserDashboardDataMutation();
   console.log(data);
 
-  const onSubmitForm = async (values: any) => {
+  const onSubmitForm = async (values: any, { resetForm }: any) => {
     console.log(values, 34444);
-    // const editUserFormData = {
-    //   id: values.is,
-    //   name: values.name,
-    //   userName: values.username,
-    //   gender: values.gender,
-    //   ...values,
-    // };
+    const editUserFormData = {
+      ...values,
+    };
 
-    // const fd = new FormData();
+    const fd = new FormData();
 
-    // for (let i in editUserFormData) {
-    //   fd.append(i, editUserFormData[i]);
-    // }
+    for (let i in editUserFormData) {
+      fd.append(i, editUserFormData[i]);
+      console.log(i, "res", editUserFormData[i]);
+    }
 
-    // console.log(editUserFormData, 333);
     try {
-      await data(values).unwrap();
-      console.log(await data(values).unwrap(), 333);
+      console.log(fd, 99999);
+      await data(editUserFormData)
+        .unwrap()
+        .then((res) => {
+          console.log(res, "res");
+        });
+      // resetForm();
     } catch (error) {
       console.log(error);
     }

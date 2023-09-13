@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 
 import { userFieldValues, userSchema } from "../../edit-user/lib";
 
@@ -21,19 +21,18 @@ import { EditUserFields } from "../../edit-user/edit-user-fields";
 export const DashboardModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data] = useAddUserDashboardDataMutation();
-  console.log(data);
 
-  const onSubmitAddForm = async (values: any) => {
+  const onSubmitForm = async (values: any, { resetForm }: any) => {
     console.log("add", values);
 
-    const fd = new FormData();
-    for (let i in values) {
-      fd.append(i, values[i]);
-    }
-
+    // const fd = new FormData();
+    // for (let i in values) {
+    //   fd.append(i, values[i]);
+    // }
+    // console.log(fd, "values");
     try {
       await data(values).unwrap();
-      console.log(await data(values).unwrap(), 99);
+      resetForm();
     } catch (error) {
       console.log(error);
     }
@@ -51,11 +50,15 @@ export const DashboardModal = () => {
             <Formik
               initialValues={userFieldValues}
               validationSchema={userSchema}
-              onSubmit={onSubmitAddForm}
+              onSubmit={onSubmitForm}
             >
               {(formik) => {
                 // console.log("formik", formik);
-                return <EditUserFields />;
+                return (
+                  <Form>
+                    <EditUserFields />
+                  </Form>
+                );
               }}
             </Formik>
           </ModalBody>

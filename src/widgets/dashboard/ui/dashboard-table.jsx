@@ -24,15 +24,16 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 
 export const DashboardTable = () => {
-  const [getAllUserData, { currentData }] = useGetUserDashboardDataQuery();
+  const { data } = useGetUserDashboardDataQuery();
   const [deleteUserInfo] = useDeleteUserDashboardDataMutation();
   const navigate = useNavigate();
+  const [getData, setGetData] = React.useState();
 
-  console.log(currentData);
-  // React.useEffect(() => {
-  //   getAllUserData();
-  // }, []);
+  React.useEffect(() => {
+    setGetData(data);
+  }, [data]);
 
+  console.log(getData);
   const editUser = async (data) => {
     for (let i in userFieldValues) {
       userFieldValues[i] = data[i];
@@ -44,7 +45,6 @@ export const DashboardTable = () => {
   const deleteUser = async (userID) => {
     try {
       await deleteUserInfo(userID).unwrap();
-      // getAllUserData();
       console.log("success");
     } catch (error) {
       console.log(error);
@@ -67,7 +67,7 @@ export const DashboardTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {/* {currentData?.map((data) => {
+          {data?.map((data) => {
             return (
               <Tr key={data.id}>
                 <Td>{data.name}</Td>
@@ -89,7 +89,7 @@ export const DashboardTable = () => {
                 </Th>
               </Tr>
             );
-          })} */}
+          })}
         </Tbody>
       </Table>
     </TableContainer>
