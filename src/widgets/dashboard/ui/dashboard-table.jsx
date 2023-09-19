@@ -25,15 +25,20 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 export const DashboardTable = () => {
   const { data } = useGetUserDashboardDataQuery();
+  const [getData] = userDataAPI.endpoints.getUserDashboardData.useLazyQuery();
   const [deleteUserInfo] = useDeleteUserDashboardDataMutation();
   const navigate = useNavigate();
-  const [getData, setGetData] = React.useState();
+  const [userData, setUserData] = React.useState();
 
   React.useEffect(() => {
-    setGetData(data);
-  }, [data]);
+    getData()
+      .unwrap()
+      .then((res) => {
+        console.log("res", res);
+        setUserData(res);
+      });
+  }, []);
 
-  console.log(getData);
   const editUser = async (data) => {
     for (let i in userFieldValues) {
       userFieldValues[i] = data[i];
@@ -46,6 +51,7 @@ export const DashboardTable = () => {
     try {
       await deleteUserInfo(userID).unwrap();
       console.log("success");
+      console.log(data, "data");
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +73,7 @@ export const DashboardTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((data) => {
+          {userData?.map((data) => {
             return (
               <Tr key={data.id}>
                 <Td>{data.name}</Td>
@@ -87,6 +93,7 @@ export const DashboardTable = () => {
                     <Text ms={1}>Delete</Text>
                   </Button>
                 </Th>
+                {console.log(data)}
               </Tr>
             );
           })}

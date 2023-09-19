@@ -17,8 +17,8 @@ export const userDataAPI = createApi({
       }),
     }),
     updateUserDashboardData: build.mutation({
-      query: ({ id, data }) => ({
-        url: `https://64bf80315ee688b6250d83db.mockapi.io/user/${id}`,
+      query: (data) => ({
+        url: `https://64bf80315ee688b6250d83db.mockapi.io/user/${data.id}`,
         method: "PUT",
         body: data,
       }),

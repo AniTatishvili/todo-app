@@ -9,29 +9,15 @@ import { EditUserFields } from "../../widgets/edit-user";
 
 export const EditUser = () => {
   const [data] = useUpdateUserDashboardDataMutation();
-  console.log(data);
 
   const onSubmitForm = async (values: any, { resetForm }: any) => {
-    console.log(values, 34444);
-    const editUserFormData = {
-      ...values,
-    };
-
-    const fd = new FormData();
-
-    for (let i in editUserFormData) {
-      fd.append(i, editUserFormData[i]);
-      console.log(i, "res", editUserFormData[i]);
-    }
-
     try {
-      console.log(fd, 99999);
-      await data(editUserFormData)
+      await data(values)
         .unwrap()
         .then((res) => {
           console.log(res, "res");
         });
-      // resetForm();
+      resetForm();
     } catch (error) {
       console.log(error);
     }
