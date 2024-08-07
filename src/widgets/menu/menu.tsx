@@ -31,7 +31,7 @@ export const HeaderMenu = () => {
         <List display={"flex"} alignItems={"center"} gap={3}>
           <ListItem>
             <NavLink
-              to={"/home"}
+              to={"/"}
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#285e61" : "",

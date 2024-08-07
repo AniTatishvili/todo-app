@@ -8,7 +8,7 @@ export function RoutesConfig() {
   return (
     <Routes>
       <Route element={<PageLayout />}>
-        <Route path="home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="edit" element={<Edit />} />
       </Route>
     </Routes>
